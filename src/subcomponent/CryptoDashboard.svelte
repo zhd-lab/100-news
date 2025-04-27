@@ -1,14 +1,8 @@
 <script>
     import { onMount, afterUpdate } from "svelte";
-    import {
-        Button,
-        Spinner,
-        Alert,
-        ListGroup,
-        Badge,
-        Card,
-    } from "sveltestrap";
+    import { Spinner } from "sveltestrap";
     import Chart from "chart.js/auto";
+    import { mode, cardColor, color, InputColor } from "../../stores/store";
 
     let cryptos = [];
     let selectedCrypto = null;
@@ -19,6 +13,29 @@
 
     let chartInstance = null;
     let chartCanvas;
+
+    // Variables liées aux couleurs du mode
+    let currentMode;
+    let currentCardColor;
+    let currentColor;
+    let currentInputColor;
+
+    // S'abonner aux changements du store
+    mode.subscribe((newMode) => {
+        currentMode = newMode;
+    });
+
+    cardColor.subscribe((newCardColor) => {
+        currentCardColor = newCardColor;
+    });
+
+    color.subscribe((newColor) => {
+        currentColor = newColor;
+    });
+
+    InputColor.subscribe((newInputColor) => {
+        currentInputColor = newInputColor;
+    });
 
     onMount(async () => {
         try {
@@ -49,7 +66,6 @@
                     "Erreur lors de la récupération des données du graphique.",
                 );
             const data = await res.json();
-            //console.log('set de data complet :\n' + JSON.stringify(data)); tmp dbg
 
             if (data.prices && data.prices.length > 0) {
                 chartPoints = data.prices.map(([timestamp, price]) => ({
@@ -71,7 +87,7 @@
     });
 
     function renderChart() {
-        if (!chartCanvas) return;
+        if (!chartCanvas || !chartCanvas.getContext) return;
 
         const ctx = chartCanvas.getContext("2d");
 
@@ -87,7 +103,7 @@
                     {
                         label: `Prix (${selectedCrypto.symbol.toUpperCase()})`,
                         data: chartPoints.map((point) => point.price),
-                        borderColor: "#007bff",
+                        borderColor: currentColor, // Utilisation de la couleur du store
                         backgroundColor: "rgba(0, 123, 255, 0.1)",
                         fill: true,
                     },
@@ -97,29 +113,57 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {
-                    x: { title: { display: true, text: "Date" } },
-                    y: { title: { display: true, text: "Prix (USD)" } },
+                    x: {
+                        title: {
+                            display: true,
+                            text: "Date",
+                            color: currentColor,
+                        },
+                        ticks: { color: currentColor },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: "Prix (USD)",
+                            color: currentColor,
+                        },
+                        ticks: { color: currentColor },
+                    },
+                },
+                plugins: {
+                    legend: {
+                        labels: { color: currentColor },
+                    },
                 },
             },
         });
     }
 </script>
 
-<div class="crypto-container">
+<div class="crypto-container" style="background-color: {currentCardColor};">
     <div class="crypto-list">
         <div align="center">
-            <Badge color="primary" style="margin-bottom: 1vh; margin-top: 1vh;">
-                <h5>Cryptos</h5>
-            </Badge>
+            <div
+                class="badge-primary"
+                style="background-color: {currentColor};"
+            >
+                <h5 style="color: grey;">Cryptos</h5>
+            </div>
         </div>
+
         {#if loading}
             <Spinner color="primary" />
             <p>Chargement...</p>
         {:else if error}
-            <Alert color="danger">{error}</Alert>
+            <div
+                class="alert-danger"
+                style="background-color: {currentCardColor}; color: {currentColor};"
+            >
+                {error}
+            </div>
         {:else}
-            <hr style="color: #007bff;" />
-            <ListGroup>
+            <hr class="divider" />
+            <div class="list-group">
                 {#each cryptos as crypto}
                     <!-- svelte-ignore a11y-click-events-have-key-events -->
                     <div
@@ -128,24 +172,32 @@
                             ? 'selected'
                             : ''}"
                         on:click={() => selectCrypto(crypto)}
+                        style="background-color: {currentCardColor}; color: {currentColor};"
                     >
-                        <Badge color="primary"
-                            >({crypto.symbol.toUpperCase()})</Badge
+                        <div
+                            class="badge-primary"
+                            style="background-color: {currentColor};"
                         >
-                        <strong style="color: #0056b3;">{crypto.name} </strong>
+                            {crypto.symbol.toUpperCase()}
+                        </div>
+                        <strong
+                            class="crypto-name"
+                            style="color: {currentColor};">{crypto.name}</strong
+                        >
                         <p>Prix : ${crypto.current_price.toFixed(2)}</p>
                     </div>
                 {/each}
-            </ListGroup>
+            </div>
         {/if}
     </div>
 
     <div class="crypto-details">
         {#if selectedCrypto}
-            <h3 style="text-align: center;">
+            <h3 class="text-center" style="color: {currentColor};">
                 {selectedCrypto.name} ({selectedCrypto.symbol.toUpperCase()})
             </h3>
-            <div style="display: flex; gap: 2vh; margin-top: 2vh;">
+
+            <div class="crypto-info" style="color: {currentColor};">
                 <p>
                     <strong>Prix actuel :</strong>
                     ${selectedCrypto.current_price.toFixed(2)}
@@ -158,18 +210,16 @@
                     <strong>Volume (24h) :</strong>
                     ${selectedCrypto.total_volume.toLocaleString()}
                 </p>
-                <p>
-                    <Badge
-                        color={selectedCrypto.price_change_percentage_24h > 0
-                            ? "success"
-                            : "danger"}
-                    >
-                        {selectedCrypto.price_change_percentage_24h.toFixed(2)}%
-                    </Badge>
-                </p>
+                <div
+                    class={selectedCrypto.price_change_percentage_24h > 0
+                        ? "badge-success"
+                        : "badge-danger"}
+                    style="background-color: {currentColor};"
+                >
+                    {selectedCrypto.price_change_percentage_24h.toFixed(2)}%
+                </div>
             </div>
 
-            <!-- Graphique -->
             {#if chartLoading}
                 <Spinner color="primary" />
                 <p>Chargement du graphique...</p>
@@ -179,11 +229,11 @@
                 </div>
             {/if}
         {:else}
-            <Alert color="light" style="height: 87vh;">
-                <Card
-                    color="light"
-                    style="color: #007bff; text-align: center; padding: 4vh; margin-top: 30vh; font-height: bold; font-size: 3vh;"
-                >
+            <div
+                class="alert-light placeholder-alert"
+                style="background-color: {currentCardColor};"
+            >
+                <div class="placeholder-card">
                     <div align="center">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -199,18 +249,44 @@
                             />
                         </svg>
                     </div>
-                    <p
-                        style="margin-top: 2vh; font-weight: bold; text-decoration: underline;"
-                    >
+                    <p class="placeholder-text" style="color: {currentColor};">
                         Sélectionnez une crypto
                     </p>
-                </Card>
-            </Alert>
+                </div>
+            </div>
         {/if}
     </div>
 </div>
 
 <style>
+    :global(html) {
+        --background: #ffffff;
+        --text: #000000;
+        --primary: #007bff;
+        --secondary: #6c757d;
+        --success: #28a745;
+        --danger: #dc3545;
+        --light: #f8f9fa;
+        --dark: #343a40;
+
+        background-color: var(--background);
+        color: var(--text);
+    }
+
+    :global(html.dark) {
+        --background: #121212;
+        --text: #ffffff;
+        --primary: #3399ff;
+        --secondary: #aaaaaa;
+        --success: #28a745;
+        --danger: #dc3545;
+        --light: #2a2a2a;
+        --dark: #ffffff;
+
+        background-color: var(--background);
+        color: var(--text);
+    }
+
     .crypto-container {
         display: flex;
         gap: 20px;
@@ -221,18 +297,21 @@
         width: 25%;
         overflow-y: auto;
         height: 87vh;
-        border-right: 2px solid #eee;
+        border-right: 2px solid var(--secondary);
         padding-right: 15px;
+        background-color: var(--light); /* Amélioration du fond de la liste */
     }
 
     .crypto-details {
         height: 87vh;
         width: 70%;
+        background-color: var(--light); /* Fond plus clair pour les détails */
     }
 
     .chart-container {
         position: relative;
         height: 400px;
+        background: var(--background);
     }
 
     .crypto-item {
@@ -240,14 +319,89 @@
         padding: 10px;
         border-radius: 5px;
         transition: background 0.3s;
+        background: var(--light); /* Changer la couleur de fond en mode clair */
+        color: var(--text); /* Contraste plus élevé avec le texte */
     }
 
     .crypto-item:hover {
-        background: #f0f0f0;
+        background: rgba(0, 123, 255, 0.1);
     }
 
     .selected {
-        background: #007bff;
+        background: var(--primary);
         color: white;
+    }
+
+    .badge-primary {
+        background-color: var(--primary);
+        color: grey;
+        padding: 0.5em 1em;
+        border-radius: 10px;
+        display: inline-block;
+    }
+
+    .badge-success {
+        background-color: var(--success);
+        color: white;
+        padding: 0.3em 0.6em;
+        border-radius: 10px;
+        display: inline-block;
+    }
+
+    .badge-danger {
+        background-color: var(--danger);
+        color: white;
+        padding: 0.3em 0.6em;
+        border-radius: 10px;
+        display: inline-block;
+    }
+
+    .crypto-info {
+        display: flex;
+        gap: 2vh;
+        margin-top: 2vh;
+        flex-wrap: wrap;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .divider {
+        border-color: var(--primary);
+    }
+
+    .alert-danger {
+        background-color: var(--danger);
+        color: white;
+        padding: 1rem;
+        border-radius: 0.5rem;
+    }
+
+    .alert-light {
+        background-color: var(--light);
+        color: var(--text);
+        padding: 1rem;
+        border-radius: 0.5rem;
+    }
+
+    .placeholder-alert {
+        height: 87vh;
+        background: var(--background);
+    }
+
+    .placeholder-card {
+        color: var(--primary);
+        text-align: center;
+        padding: 4vh;
+        margin-top: 30vh;
+        font-weight: bold;
+        font-size: 3vh;
+    }
+
+    .placeholder-text {
+        margin-top: 2vh;
+        font-weight: bold;
+        text-decoration: underline;
     }
 </style>

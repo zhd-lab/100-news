@@ -1,9 +1,8 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import { Card, Badge, Button, Input, Modal, Icon, Image } from "sveltestrap";
   import NavBar from "./NavBar.svelte";
-  import { lang } from "../../stores/store";
-  import { onDestroy } from "svelte";
+  import { lang, mode, color, cardColor, InputColor } from "../../stores/store";
   import { ParsingEntry } from "../Algo/NewsParser.js";
 
   let news = [];
@@ -12,6 +11,40 @@
   let searchQuery = "";
   let currentLang = "fr";
   let openModalId = null;
+
+  let currentColor = "";
+  let currentCardColor = "";
+  let currentInputColor = "";
+  let currentMode = "light";
+
+  // Stores subscriptions
+  const unsubLang = lang.subscribe(value => {
+    if (currentLang !== value) {
+      currentLang = value;
+      fetchNews();
+    }
+  });
+  
+  const unsubMode = mode.subscribe(value => {
+    currentMode = value;
+  });
+  const unsubColor = color.subscribe(value => {
+    currentColor = value;
+  });
+  const unsubCardColor = cardColor.subscribe(value => {
+    currentCardColor = value;
+  });
+  const unsubInputColor = InputColor.subscribe(value => {
+    currentInputColor = value;
+  });
+
+  onDestroy(() => {
+    unsubLang();
+    unsubMode();
+    unsubColor();
+    unsubCardColor();
+    unsubInputColor();
+  });
 
   const newsApiKey = "a6d4ce194f4d43f79d9986f88b393897";
   let country = "france";
@@ -32,13 +65,6 @@
       error = "Erreur lors de la récupération des actualités.";
     }
   }
-
-  lang.subscribe((value) => {
-    if (currentLang !== value) {
-      currentLang = value;
-      fetchNews();
-    }
-  });
 
   onMount(fetchNews);
 
@@ -62,13 +88,10 @@
     filteredNews = news.filter(
       (article) =>
         (article.title && article.title.toLowerCase().includes(query)) ||
-        (article.description &&
-          article.description.toLowerCase().includes(query)) ||
-        (article.source.name &&
-          article.source.name.toLowerCase().includes(query)) ||
+        (article.description && article.description.toLowerCase().includes(query)) ||
+        (article.source.name && article.source.name.toLowerCase().includes(query)) ||
         (article.author && article.author.toLowerCase().includes(query)) ||
-        (article.publishedAt &&
-          formatDate(article.publishedAt).toLowerCase().includes(query)),
+        (article.publishedAt && formatDate(article.publishedAt).toLowerCase().includes(query)),
     );
   }
 
@@ -77,16 +100,16 @@
   }
 </script>
 
-<main class="main">
+<main class="main" style="background-color: {currentCardColor}; color: {currentColor};">
   <div class="global">
     <div class="actu_render">
       <div class="searchbar">
         <Input
+        style="background-color: {currentInputColor}; color: {currentColor};"
           type="search"
           placeholder="Recherchez par titre, auteur, source, date..."
           bind:value={searchQuery}
           on:input={filterNews}
-          class="search-input"
         />
       </div>
 
@@ -96,14 +119,12 @@
         <div class="news-container">
           {#each filteredNews as article}
             <Card
-              style="margin: 0.4vh; padding: 0.5vh 1vh; display: flex; flex-direction: column;"
+              style="margin: 0.4vh; padding: 0.5vh 1vh; display: flex; flex-direction: column; background-color: {currentCardColor}; color: {currentColor};"
             >
               <li class="news-item">
                 <div class="badge-container">
                   <Badge color="primary">{article.source.name}</Badge>
-                  <Badge style="font-size: 0.7rem; color: #555;"
-                    >{formatDate(article.publishedAt)}</Badge
-                  >
+                  <Badge style="font-size: 0.7rem; color: #555;">{formatDate(article.publishedAt)}</Badge>
                   {#if article.author}
                     <Badge color="light">Auteur: {article.author}</Badge>
                   {/if}
@@ -116,24 +137,10 @@
                       <p class="news-description">{article.description}</p>
                     {/if}
                   </div>
-                  <Button
-                    color="warning"
-                    on:click={() => toggleModal(article.url)}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      fill="currentColor"
-                      class="bi bi-aspect-ratio"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        d="M0 3.5A1.5 1.5 0 0 1 1.5 2h13A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5zM1.5 3a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z"
-                      />
-                      <path
-                        d="M2 4.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1H3v2.5a.5.5 0 0 1-1 0zm12 7a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H13V8.5a.5.5 0 0 1 1 0z"
-                      />
+                  <Button color="light" on:click={() => toggleModal(article.url)}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-aspect-ratio" viewBox="0 0 16 16">
+                      <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h13A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5zM1.5 3a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z"/>
+                      <path d="M2 4.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1H3v2.5a.5.5 0 0 1-1 0zm12 7a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H13V8.5a.5.5 0 0 1 1 0z"/>
                     </svg>
                   </Button>
                 </div>
@@ -147,35 +154,23 @@
                         size="lg"
                         on:click={() => toggleModal(article.url)}
                       >
-                        {ParsingEntry(article.description)}
-                        
-                        <Icon name="x" class="h1" />
+                      
                       </Button>
                     </div>
-                    <div class="modal-content">
+                    <div class="modal-content" style="background-color: {currentCardColor}; color: {currentColor};">
                       <h2>{article.title}</h2>
                       <div class="modal-meta">
                         <Badge color="primary">{article.source.name}</Badge>
                         {#if article.author}
                           <Badge color="light">Auteur: {article.author}</Badge>
                         {/if}
-                        <Badge style="color: #555;"
-                          >{formatDate(article.publishedAt)}</Badge
-                        >
+                        <Badge style="color: #555;">{formatDate(article.publishedAt)}</Badge>
                       </div>
                       {#if article.urlToImage}
-                        <Image
-                          src={article.urlToImage}
-                          alt="Image de l'article"
-                          class="modal-image"
-                        />
+                        <Image src={article.urlToImage} alt="Image de l'article" class="modal-image" />
                       {/if}
                       <p class="modal-description">{article.description}</p>
-                      <Button
-                        color="primary"
-                        href={article.url}
-                        target="_blank"
-                      >
+                      <Button color="light" href={article.url} target="_blank">
                         Lire l'article complet
                       </Button>
                     </div>
@@ -191,40 +186,7 @@
 </main>
 
 <style>
-  /* Modal */
-  .modal-content {
-    padding: 20px;
-  }
-
-  .modal-meta {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 10px;
-  }
-
-  .modal-image {
-    width: 100%;
-    height: auto;
-    margin: 10px 0;
-    border-radius: 8px;
-  }
-
-  .modal-description {
-    font-size: 1.2rem;
-    color: #333;
-    margin-bottom: 20px;
-  }
-
-  .sidebar {
-    padding: 1vh;
-    margin-top: 6vh;
-  }
-
-  .main {
-    background-color: #f0f0f0;
-  }
-
+  /* Styles généraux */
   .global {
     display: flex;
     align-items: start;
@@ -236,23 +198,12 @@
   .searchbar {
     display: flex;
     align-items: center;
-    gap: 10px; /* Espacement entre l'icône et l'input */
+    gap: 10px;
     margin: 1vh;
-  }
-
-  .search-icon {
-    width: 3vw;
-    height: 4vh;
-    fill: grey;
-  }
-
-  .search-input {
-    flex-grow: 1; /* Permet à l'input de prendre toute la place restante */
   }
 
   .actu_render {
     width: 100%;
-    background-color: #f0f0f0;
   }
 
   .error {
@@ -270,7 +221,6 @@
     gap: 10px;
   }
 
-  /* Conteneur des badges sur une seule ligne */
   .badge-container {
     display: flex;
     flex-wrap: wrap;
@@ -278,7 +228,6 @@
     align-items: center;
   }
 
-  /* Conteneur principal du contenu */
   .content-container {
     display: flex;
     justify-content: space-between;
@@ -299,7 +248,23 @@
 
   .news-description {
     font-size: 1.6vh;
-    color: #333;
     margin-top: 5px;
+  }
+
+  .modal-content {
+    padding: 20px;
+  }
+
+  .modal-meta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .modal-description {
+    font-size: 1.2rem;
+    margin-top: 4vh;
+    margin-bottom: 2vh;
   }
 </style>

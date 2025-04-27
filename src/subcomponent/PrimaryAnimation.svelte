@@ -50,7 +50,6 @@
         align-items: center;
         height: 100vh;
         font-size: 8vh;
-        /* color: #0d6efd; */
         font-weight: bold;
         font-family: Arial, sans-serif;
     }

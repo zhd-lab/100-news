@@ -1,20 +1,19 @@
 <script>
   import { onMount } from "svelte";
-  import { Chart } from "chart.js/auto"; // Pour afficher un graphique
+  import { Chart } from "chart.js/auto";
+  import { mode } from "../../stores/store";
 
-  // Votre clé API Twelve Data
   const API_KEY = "8df9195a09c14505a96d1a6aad0fafff";
   const BASE_URL = "https://api.twelvedata.com/time_series";
 
-  // Variables d'état
-  let selectedMarket = "AAPL"; // Exemple de marché (AAPL pour Apple)
+  let selectedMarket = "AAPL";
   let marketData = null;
   let loading = false;
   let errorMessage = "";
   let chart = null;
   let chartData = { labels: [], data: [] };
+  let isNightMode = false;
 
-  // Liste des symboles de marchés
   const markets = [
     { name: "Apple", symbol: "AAPL" },
     { name: "Microsoft", symbol: "MSFT" },
@@ -22,7 +21,6 @@
     { name: "Tesla", symbol: "TSLA" },
   ];
 
-  // Fonction pour récupérer les données de l'API Twelve Data
   async function fetchMarketData(symbol) {
     loading = true;
     errorMessage = "";
@@ -44,7 +42,6 @@
         throw new Error("Aucune donnée retournée pour ce symbole.");
       }
 
-      // Extraire les 20 derniers points de données
       const latestData = timeSeries.slice(0, 20);
       chartData.labels = latestData.map((entry) => entry.datetime);
       chartData.data = latestData.map((entry) => parseFloat(entry.close));
@@ -57,10 +54,9 @@
     }
   }
 
-  // Mettre à jour le graphique avec les nouvelles données
   function updateChart() {
     if (chart) {
-      chart.destroy(); // Détruire le graphique précédent s'il existe
+      chart.destroy();
     }
 
     const ctx = document.getElementById("marketChart").getContext("2d");
@@ -73,6 +69,7 @@
             label: "Prix de clôture",
             data: chartData.data,
             borderColor: "#007bff",
+            backgroundColor: isNightMode ? "#90caf9" : "#007bff",
             fill: false,
           },
         ],
@@ -81,15 +78,30 @@
         responsive: true,
         scales: {
           x: {
+            ticks: {
+              color: isNightMode ? "white" : "black",
+            },
             title: {
               display: true,
               text: "Temps",
+              color: isNightMode ? "white" : "black",
             },
           },
           y: {
+            ticks: {
+              color: isNightMode ? "white" : "black",
+            },
             title: {
               display: true,
               text: "Prix (USD)",
+              color: isNightMode ? "white" : "black",
+            },
+          },
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: isNightMode ? "white" : "black",
             },
           },
         },
@@ -97,19 +109,25 @@
     });
   }
 
-  // market swap
   function changeMarket(market) {
     selectedMarket = market.symbol;
     fetchMarketData(market.symbol);
   }
 
+  // Ecouter les changements de mode
+  const unsubscribe = mode.subscribe((value) => {
+    isNightMode = value === "dark";
+    if (chart) {
+      updateChart(); // Met à jour les couleurs du graphique aussi
+    }
+  });
+
   onMount(() => {
-    fetchMarketData(markets[0].symbol); // Init avec Apple
+    fetchMarketData(markets[0].symbol);
   });
 </script>
 
-
-<div>
+<div class="{isNightMode ? 'night-mode' : ''}">
   <div class="menu" align="center">
     {#each markets as market}
       <button class="market-btn" on:click={() => changeMarket(market)}>
@@ -127,7 +145,6 @@
   {/if}
 
   {#if marketData}
-  <!-- todo : fix api return and parse -->
     <div class="market-info">
       <h2>Dernières données pour {selectedMarket}:</h2>
       <p><strong>Prix actuel :</strong> {marketData["close"]} USD</p>
@@ -150,11 +167,11 @@
     border-radius: 5px;
   }
 
-
   .market-btn:hover {
     background-color: white;
     animation: hoveredAnim 0.2s ease-in-out forwards;
   }
+
   @keyframes hoveredAnim {
     0% {
       background-color: #0056b3;
@@ -163,7 +180,6 @@
       background-color: white;
       color: #0056b3;
       font-weight: bold;
-      font-size: bold;
     }
   }
 
@@ -195,5 +211,26 @@
     border-radius: 0.5vh;
     margin: 2vh;
     max-height: 40vh;
+  }
+
+  /* Night Mode styles */
+  .night-mode {
+    background-color: #121212;
+    color: white;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .night-mode .market-btn {
+    background-color: #333;
+    color: white;
+  }
+
+  .night-mode .market-btn:hover {
+    background-color: white;
+    color: #333;
+  }
+
+  .night-mode .menu {
+    background-color: #1f1f1f;
   }
 </style>

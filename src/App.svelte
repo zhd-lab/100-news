@@ -4,19 +4,19 @@
   import DashBoard from "./subcomponent/DashBoard.svelte";
   import PrimaryAnimation from "./subcomponent/PrimaryAnimation.svelte";
   import CryptoDashboard from "./subcomponent/CryptoDashboard.svelte";
-    import NavBar from "./subcomponent/NavBar.svelte";
-    import Bourse from "./subcomponent/Bourse.svelte";
+  import NavBar from "./subcomponent/NavBar.svelte";
+  import Bourse from "./subcomponent/Bourse.svelte";
 
   onMount(() => {
     setTimeout(() => {
       state.set("dashboard");
-    }, 4000);
+    }, 5000);
   });
 </script>
 
 <main>
   {#if $state != "animation"}
-  <NavBar />
+    <NavBar />
   {/if}
   {#if $state === "animation"}
     <PrimaryAnimation />
@@ -24,7 +24,7 @@
     <DashBoard />
   {:else if $state === "cryptoDashboard"}
     <CryptoDashboard />
-    {:else if $state === "bourse"}
+  {:else if $state === "bourse"}
     <Bourse />
   {/if}
 </main>
