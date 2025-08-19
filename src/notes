@@ -1,0 +1,8 @@
+Prysma
+
+échaper au biais de confirmation (effet de l'algo de recommandation)
+
+todo : 
+-> fix la range du form : afficher les nombres en dessous et gerer la color de la card en fonction de la value ( var a trouver)
+
+-> il y a un pb d'utf-8 avec le top 5 des mots, ils perdent leurs accents

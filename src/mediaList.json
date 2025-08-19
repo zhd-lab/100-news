@@ -1,0 +1,236 @@
+{
+    "Le Monde": {
+        "orientation": "center-left",
+        "access": "payant",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "Le Parisien": {
+        "orientation": "",
+        "access": "partiel",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "Le Figaro": {
+        "orientation": "right",
+        "access": "payant",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "Libération": {
+        "orientation": "left",
+        "access": "payant",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "Mediapart": {
+        "orientation": "far-left",
+        "access": "payant",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "Valeurs Actuelles": {
+        "orientation": "far-right",
+        "access": "cookies intrusifs",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "Les Échos": {
+        "orientation": "center-right",
+        "access": "payant",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "BFMTV": {
+        "orientation": "right",
+        "access": "gratuit",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "Le Dauphiné Libéré": {
+        "orientation": "center",
+        "access": "partiel",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "Franceinfo.fr": {
+        "orientation": "right",
+        "access": "gratuit",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "Le HuffPost": {
+        "orientation": "right",
+        "access": "gratuit",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "La Tribune.fr": {
+        "orientation": "center",
+        "access": "partiel",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "L'Obs": {
+        "orientation": "center-left",
+        "access": "partiel",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "20 Minutes": {
+        "orientation": "center",
+        "access": "gratuit",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "Le Point": {
+        "orientation": "right",
+        "access": "cookies intrusifs",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "Courrier International": {
+        "orientation": "center-left",
+        "access": "partiel",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "Tuxboard.com": {
+        "orientation": "right",
+        "access": "cookies intrusifs",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "SO FOOT": {
+        "orientation": "right",
+        "access": "gratuit",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "Begeek.fr": {
+        "orientation": "right",
+        "access": "cookies intrusifs",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "Daily Geek Show": {
+        "orientation": "right",
+        "access": "cookies intrusifs",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "Iletaitunepub.fr": {
+        "orientation": "right",
+        "access": "cookies intrusifs",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "Lalibre.be": {
+        "orientation": "right",
+        "access": "payant",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "Cathobel.be": {
+        "orientation": "right",
+        "access": "gratuit",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "dh.be": {
+        "orientation": "right",
+        "access": "payant",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "Les Numériques": {
+        "orientation": "right",
+        "access": "gratuit",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    },
+    "Caradisiac.com": {
+        "orientation": "right",
+        "access": "gratuit",
+        "trustable": "1",
+        "main-type": "",
+        "location": "",
+        "traceable": "",
+        "visibility": "true"
+    }
+}

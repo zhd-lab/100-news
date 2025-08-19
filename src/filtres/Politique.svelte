@@ -1,0 +1,3 @@
+<main>
+    politique
+</main>

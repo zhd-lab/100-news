@@ -23,6 +23,7 @@
     "leaflet": "^1.9.4",
     "svelte-motion": "^0.12.2",
     "svelte-routing": "^2.13.0",
-    "sveltestrap": "^5.10.0"
+    "sveltestrap": "^5.10.0",
+    "three": "^0.178.0"
   }
 }

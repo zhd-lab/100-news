@@ -7,24 +7,20 @@
   import NavBar from "./subcomponent/NavBar.svelte";
   import Bourse from "./subcomponent/Bourse.svelte";
 
+  import 'bootstrap/dist/css/bootstrap.min.css';
+
+
   onMount(() => {
     setTimeout(() => {
       state.set("dashboard");
-    }, 5000);
+    }, 6000);
   });
 </script>
 
 <main>
-  {#if $state != "animation"}
-    <NavBar />
-  {/if}
   {#if $state === "animation"}
     <PrimaryAnimation />
   {:else if $state === "dashboard"}
     <DashBoard />
-  {:else if $state === "cryptoDashboard"}
-    <CryptoDashboard />
-  {:else if $state === "bourse"}
-    <Bourse />
   {/if}
 </main>

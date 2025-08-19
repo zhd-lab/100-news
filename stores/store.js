@@ -14,6 +14,15 @@ export const color = writable("");
 export const cardColor = writable("");
 export const InputColor = writable("");
 
+// offcanvas
+export const showOffcanvas = writable(false);
+
+export const likedList = writable([]);
+
+// data
+export const news = writable([]);
+
+
 // update front colors
 function updateThemeColors(currentMode) {
     if (currentMode === "dark") {
