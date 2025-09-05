@@ -656,7 +656,7 @@
       background-color 1s,
       color 0.3s;"
                         >
-                          <h2>{article.title}</h2>
+                          <h2 style="font-size:large; font-weight: bold; margin-bottom: 1vh;">{article.title}</h2>
                           <div class="modal-meta">
                             <Badge color="primary">{article.source.name}</Badge>
                             {#if article.author}
@@ -672,14 +672,15 @@
                             <Image
                               src={article.urlToImage}
                               alt="Image de l'article"
-                              class="modal-image"
+                              style="border-radius: 0.2vh; width: 100%; height: 40vh; object-fit: cover;"
                             />
                           {/if}
                           <p class="modal-description">
                             {article.description}
                           </p>
                           <Button
-                            color="light"
+                            outline
+                            color="secondary"
                             href={article.url}
                             target="_blank"
                           >
@@ -732,7 +733,7 @@
                     </div>
 
                     <div
-                      style="display: flex; gap: 2vh; align-items: center; margin-left: auto;"
+                      style="display: flex; gap: 2vh; align-items: center; margin-left: auto; margin-top: auto;"
                     >
                       {#if $likedList.some((item) => item.title === article.title && item.publishedAt === article.publishedAt)}
                         <Button
@@ -846,7 +847,7 @@
       background-color 1s,
       color 0.3s;"
                         >
-                          <h2>{article.title}</h2>
+                          <h2 style="font-size:large; font-weight: bold; margin-bottom: 1vh;">{article.title}</h2>
                           <div class="modal-meta">
                             <Badge color="primary">{article.source.name}</Badge>
                             {#if article.author}
@@ -862,14 +863,15 @@
                             <Image
                               src={article.urlToImage}
                               alt="Image de l'article"
-                              class="modal-image"
+                              style="border-radius: 0.2vh; width: 100%; height: 40vh; object-fit: cover;"
                             />
                           {/if}
                           <p class="modal-description">
                             {article.description}
                           </p>
                           <Button
-                            color="light"
+                            outline
+                            color="secondary"
                             href={article.url}
                             target="_blank"
                           >
@@ -923,7 +925,7 @@
 
                     <!-- fixer la position au bottom de la card sans overflow -->
                     <div
-                      style="display: flex; gap: 2vh; align-items: center; margin-left: auto;"
+                      style="display: flex; gap: 2vh; align-items: center; margin-left: auto; margin-top: auto;"
                     >
                       {#if $likedList.some((item) => item.title === article.title && item.publishedAt === article.publishedAt)}
                         <Button
@@ -1037,7 +1039,7 @@
       background-color 1s,
       color 0.3s;"
                         >
-                          <h2>{article.title}</h2>
+                          <h2 style="font-size:large; font-weight: bold; margin-bottom: 1vh;">{article.title}</h2>
                           <div class="modal-meta">
                             <Badge color="primary">{article.source.name}</Badge>
                             {#if article.author}
@@ -1053,14 +1055,15 @@
                             <Image
                               src={article.urlToImage}
                               alt="Image de l'article"
-                              class="modal-image"
+                              style="border-radius: 0.2vh; width: 100%; height: 40vh; object-fit: cover;"
                             />
                           {/if}
                           <p class="modal-description">
                             {article.description}
                           </p>
                           <Button
-                            color="light"
+                            outline
+                            color="secondary"
                             href={article.url}
                             target="_blank"
                           >
@@ -1244,11 +1247,12 @@
   }
 
   .news-item {
-    display: inline-flex;
-    flex-direction: column;
-    gap: 2vh;
-    padding-left: 2vh;
-  }
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
 
   .badge-container {
     display: flex;
@@ -1277,18 +1281,20 @@
   }
 
   .news-title {
-    font-size: 2vh;
+    font-size: medium;
     font-weight: bold;
-    margin: 0;
+    margin-top: 2vh;
   }
 
   .news-description {
-    font-size: 1.6vh;
-    margin-top: 1vh;
+    font-size:small;
+    margin-top: 2vh;
   }
 
   .modal-content {
     padding: 2vh;
+    max-height: 90vh;
+    overflow-y: auto;
   }
 
   .modal-meta {
@@ -1299,7 +1305,7 @@
   }
 
   .modal-description {
-    font-size: 1.2rem;
+    font-size: medium;
     margin-top: 4vh;
     margin-bottom: 2vh;
   }
@@ -1377,6 +1383,7 @@
       opacity: 1;
     }
   }
+
 
   .block-3 {
     z-index: 0;
