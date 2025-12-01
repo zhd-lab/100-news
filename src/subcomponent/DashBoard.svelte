@@ -1430,7 +1430,7 @@
     backdrop-filter: blur(20vh);
     padding: 1vh 2vh;
     border-radius: 2vh;
-    box-shadow: 0 0 2vh rgba(0, 0, 0, 0.2); /* optionnel pour esthétique */
+    box-shadow: 0 0 2vh rgba(0, 0, 0, 0.2);
   }
 
   .news-layout {

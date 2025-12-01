@@ -77,9 +77,8 @@
 </script>
 
 <div class="console">
-    <h2>📊</h2>
     <div class="chart-container">
-        <canvas id="mediaChart" height="80"></canvas>
+        <canvas id="mediaChart" height="100"></canvas>
     </div>
 
     <table>
@@ -110,21 +109,23 @@
         color: #eee;
     }
 
+
     .console {
         margin-top: 4vh;
         overflow-y: auto;
         height: 80vh;
         width: 86vw;
-        background: #121212;
+
         border: 1px solid #333;
         padding: 1rem;
         border-radius: 8px;
     }
 
     .chart-container {
-        background: #1c1c1c;
         padding: 1rem;
-        border-radius: 8px;
+        border-radius: 2vh;
+        width: auto;
+        height: auto;
     }
 
     table {
@@ -141,10 +142,8 @@
     }
 
     th {
-        background-color: #222;
     }
 
     td {
-        background-color: #1a1a1a;
     }
 </style>

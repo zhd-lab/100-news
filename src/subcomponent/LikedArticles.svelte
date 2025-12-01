@@ -188,25 +188,25 @@
         overflow-x: hidden;
         overflow-y: scroll;
 
-        height: 80vh; /* Utilise tout l'espace disponible */
-        padding-top: 6vh; /* remplace margin-top */
+        height: 80vh;
+        padding-top: 6vh;
         padding-inline: 2vw;
         padding-bottom: 2vh;
         width: 90vw;
         display: flex;
         justify-content: center;
-        align-items: flex-start; /* important: éviter que les enfants soient centrés verticalement */
+        align-items: flex-start;
         box-sizing: border-box;
     }
 
     .empty-state {
         font-size: 2vh;
         text-align: center;
-        height: 100%; /* S'étend sur tout le parent */
+        height: 100%;
         display: flex;
         flex-direction: column;
-        align-items: center; /* Centre horizontalement */
-        justify-content: center; /* Centre verticalement */
+        align-items: center;
+        justify-content: center;
     }
 
     .emoji-icon {
